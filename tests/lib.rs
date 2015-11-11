@@ -2,7 +2,7 @@ extern crate rand;
 extern crate ntrumls;
 
 use rand::Rng;
-use ntru_mls::params::{ParamSet, ParamSetId};
+use ntrumls::params::{ParamSet, ParamSetId};
 
 const TESTS: u16 = 100;
 
