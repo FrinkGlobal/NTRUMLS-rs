@@ -3,7 +3,7 @@ rust:
 - stable
 - beta
 - nightly
-sudo: required
+sudo: false
 script:
 - cargo build --verbose
 - cargo test --verbose
