@@ -59,9 +59,9 @@ fn test_set_xxx20151024907() {
 fn test_set(id: ParamSetId) {
     let params = ParamSet::get_by_id(id);
 
-    let (private_key, public_key) = ntru_mls::generate_keys(&params).unwrap();
+    let (private_key, public_key) = ntrumls::generate_keys(&params).unwrap();
     for _ in 0..TESTS {
-        let (_, _) = ntru_mls::generate_keys(&params).unwrap();
+        let (_, _) = ntrumls::generate_keys(&params).unwrap();
     }
 
     let mut message = [0u8; 256];
@@ -71,8 +71,7 @@ fn test_set(id: ParamSetId) {
             message[i] = rng.gen();
         }
 
-        let signature = ntru_mls::sign(&private_key, &public_key, &message).unwrap();
-
-        assert!(ntru_mls::verify(&signature, &public_key, &message));
+        let signature = ntrumls::sign(&private_key, &public_key, &message).unwrap();
+        assert!(ntrumls::verify(&signature, &public_key, &message));
     }
 }
