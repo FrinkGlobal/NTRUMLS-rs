@@ -4,6 +4,9 @@ rust:
 - beta
 - nightly
 sudo: false
+addons:
+  apt:
+    packages: kcov
 script:
 - cargo build --verbose
 - cargo test --verbose
@@ -11,7 +14,8 @@ script:
 after_success: |
   [ $TRAVIS_PULL_REQUEST = false ] &&
   [ $TRAVIS_RUST_VERSION = stable ] &&
-  [ $TRAVIS_BRANCH = develop ] &&
+  kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/lib-* &&
+  [ $TRAVIS_BRANCH = master ] &&
   echo '<meta http-equiv=refresh content=0;url=ntrumls/index.html>' > target/doc/index.html &&
   pip install ghp-import --user $USER &&
   $HOME/.local/bin/ghp-import -n target/doc &&
