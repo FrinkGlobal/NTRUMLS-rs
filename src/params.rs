@@ -1,8 +1,10 @@
+//! NTRUMLS parameter module
+//!
+//! This module includes the needed parameters for NTRUMLS key generation.
 use libc::c_char;
 
-#[derive(PartialEq, Clone, Debug)]
 #[repr(C)]
-pub enum ParamSetId {
+enum ParamSetId {
     Xxx20140508401,
     Xxx20140508439,
     Xxx20140508593,
@@ -16,6 +18,9 @@ pub enum ParamSetId {
     Xxx20151024907,
 }
 
+/// NTRUMLS parameter set
+///
+/// This struct represents a parameter set for NTRUMLS key generation.
 #[repr(C)]
 pub struct ParamSet {
     /// Parameter set id
@@ -51,20 +56,6 @@ pub struct ParamSet {
 }
 
 impl ParamSet {
-    pub fn get_by_id(id: ParamSetId) -> ParamSet {
-        for ps in &PQ_PARAM_SETS {
-            if ps.id == id { return ps.clone(); }
-        }
-        panic!("No parameter by ID {:?}", id);
-    }
-
-    pub fn get_by_oid(oid: &[u8; 3]) -> ParamSet {
-        for ps in &PQ_PARAM_SETS {
-            if &ps.oid == oid { return ps.clone(); }
-        }
-        panic!("No parameter by OID {:?}", oid);
-    }
-
     /// Ring degree
     pub fn get_n(&self) -> u16 { self.n }
     /// Message space prime
@@ -86,7 +77,7 @@ impl ParamSet {
         self.padded_n as usize * 8
     }
 
-    /// **Unstable** Private key blob
+    /// **UNSTABLE** Private key blob
     ///
     /// TAG (1 byte), OID_LEN (1 byte), OID (3 bytes), product form f and g, g^-1 mod p
     ///
@@ -98,7 +89,7 @@ impl ParamSet {
             ) / 8) + ((self.n as usize + 4)/5)
     }
 
-    /// **Unstable** Public key blob
+    /// **UNSTABLE** Public key blob
     ///
     /// TAG (1 byte), OID_LEN (1 byte), OID (3 bytes), h (N * ceil(log2(q)) bits),
     /// digest (HASH_BYTES bytes)
@@ -109,209 +100,193 @@ impl ParamSet {
     }
 }
 
-impl Clone for ParamSet {
-    fn clone(&self) -> ParamSet {
-        ParamSet {
-            id: self.id.clone(),
-            name: self.name,
-            oid: self.oid,
-            n_bits: self.n_bits,
-            q_bits: self.q_bits,
-            n: self.n,
-            p: self.p,
-            q: self.q,
-            b_s: self.b_s,
-            b_t: self.b_t,
-            norm_bound_s: self.norm_bound_s,
-            norm_bound_t: self.norm_bound_t,
-            d1: self.d1,
-            d2: self.d2,
-            d3: self.d3,
-            padded_n: self.padded_n,
-        }
-    }
-}
+pub const XXX_20140508_401: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20140508401,
+    name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 52, 48, 49i8, 0][0],
+    oid: [0xff, 0xff, 0xff],
+    n_bits: 9,
+    q_bits: 18,
+    n: 401,
+    p: 3,
+    q: 1<<18,
+    b_s: 240,
+    b_t: 80,
+    norm_bound_s: (1<<17) - 240,
+    norm_bound_t: (1<<17) - 80,
+    d1: 8,
+    d2: 8,
+    d3: 6,
+    padded_n: 416,
+};
 
-const PQ_PARAM_SETS: [ParamSet; 9] = [
-    ParamSet {
-        id: ParamSetId::Xxx20140508401,
-        name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 52, 48, 49i8, 0][0],
-        oid: [0xff, 0xff, 0xff],
-        n_bits: 9,
-        q_bits: 18,
-        n: 401,
-        p: 3,
-        q: 1<<18,
-        b_s: 240,
-        b_t: 80,
-        norm_bound_s: (1<<17) - 240,
-        norm_bound_t: (1<<17) - 80,
-        d1: 8,
-        d2: 8,
-        d3: 6,
-        padded_n: 416,
-    },
-    ParamSet {
-        id: ParamSetId::Xxx20140508439,
-        name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 52, 51, 57, 0][0],
-        oid: [0xff, 0xff, 0xfe],
-        n_bits: 9,
-        q_bits: 19,
-        n: 439,
-        p: 3,
-        q: 1<<19,
-        b_s: 264,
-        b_t: 88,
-        norm_bound_s: (1<<18) - 264,
-        norm_bound_t: (1<<18) - 88,
-        d1: 9,
-        d2: 8,
-        d3: 5,
-        padded_n: 448,
-    },
-    ParamSet {
-        id: ParamSetId::Xxx20140508593,
-        name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 53, 57, 51, 0][0],
-        oid: [0xff, 0xff, 0xfd],
-        n_bits: 10,
-        q_bits: 19,
-        n: 593,
-        p: 3,
-        q: 1<<19,
-        b_s: 300,
-        b_t: 100,
-        norm_bound_s: (1<<18) - 300,
-        norm_bound_t: (1<<18) - 100,
-        d1: 10,
-        d2: 10,
-        d3: 8,
-        padded_n: 608,
-    },
-    ParamSet {
-        id: ParamSetId::Xxx20140508743,
-        name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 55, 52, 51, 0][0],
-        oid: [0xff, 0xff, 0xfc],
-        n_bits: 10,
-        q_bits: 20,
-        n: 743,
-        p: 3,
-        q: 1<<20,
-        b_s: 336,
-        b_t: 112,
-        norm_bound_s: (1<<19) - 336,
-        norm_bound_t: (1<<19) - 112,
-        d1: 11,
-        d2: 11,
-        d3: 15,
-        padded_n: 768,
-    },
-    ParamSet {
-        id: ParamSetId::Xxx20151024401,
-        name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 52, 48, 49, 0][0],
-        oid: [0xff, 0xff, 0xfb],
-        n_bits: 9,
-        q_bits: 15,
-        n: 401,
-        p: 3,
-        q: 1<<15,
-        b_s: 138,
-        b_t: 46,
-        norm_bound_s: (1<<14) - 138,
-        norm_bound_t: (1<<14) - 46,
-        d1: 8,
-        d2: 8,
-        d3: 6,
-        padded_n: 416,
-    },
-    ParamSet {
-        id: ParamSetId::Xxx20151024443,
-        name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 52, 52, 51, 0][0],
-        oid: [0xff, 0xff, 0xfa],
-        n_bits: 9,
-        q_bits: 16,
-        n: 443,
-        p: 3,
-        q: 1<<16,
-        b_s: 138,
-        b_t: 46,
-        norm_bound_s: (1<<15) - 138,
-        norm_bound_t: (1<<15) - 46,
-        d1: 9,
-        d2: 8,
-        d3: 5,
-        padded_n: 448,
-    },
-    ParamSet {
-        id: ParamSetId::Xxx20151024563,
-        name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 53, 54, 51, 0][0],
-        oid: [0xff, 0xff, 0xf9],
-        n_bits: 10,
-        q_bits: 16,
-        n: 563,
-        p: 3,
-        q: 1<<16,
-        b_s: 174,
-        b_t: 58,
-        norm_bound_s: (1<<15) - 174,
-        norm_bound_t: (1<<15) - 58,
-        d1: 10,
-        d2: 9,
-        d3: 8,
-        padded_n: 592,
-    },
-    // Test parameter set that is not formally transcript secure
-    // ParamSet {
-    //     id: ParamSetId::Xxx20151024509,
-    //     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 53, 48, 57, 0][0],
-    //     oid: [0xff, 0xff, 0xf8],
-    //     n_bits: 9,
-    //     q_bits: 14,
-    //     n: 509,
-    //     p: 3,
-    //     q: 1<<14,
-    //     b_s: 10000,
-    //     b_t: 10000,
-    //     norm_bound_s: (1<<13) - 1,
-    //     norm_bound_t: (1<<13) - 1,
-    //     d1: 9,
-    //     d2: 9,
-    //     d3: 8,
-    //     padded_n: 512,
-    // },
-    ParamSet {
-        id: ParamSetId::Xxx20151024743,
-        name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 55, 52, 51, 0][0],
-        oid: [0xff, 0xff, 0xf7],
-        n_bits: 10,
-        q_bits: 17,
-        n: 743,
-        p: 3,
-        q: 1<<17,
-        b_s: 186,
-        b_t: 62,
-        norm_bound_s: (1<<16) - 186,
-        norm_bound_t: (1<<16) - 62,
-        d1: 11,
-        d2: 11,
-        d3: 6,
-        padded_n: 752,
-    },
-    ParamSet {
-        id: ParamSetId::Xxx20151024907,
-        name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 57, 48, 55, 0][0],
-        oid: [0xff, 0xff, 0xf6],
-        n_bits: 10,
-        q_bits: 17,
-        n: 907,
-        p: 3,
-        q: 1<<17,
-        b_s: 225,
-        b_t: 75,
-        norm_bound_s: (1<<16) - 225,
-        norm_bound_t: (1<<16) - 75,
-        d1: 13,
-        d2: 12,
-        d3: 7,
-        padded_n: 912,
-    },
-];
+pub const XXX_20140508_439: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20140508439,
+    name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 52, 51, 57, 0][0],
+    oid: [0xff, 0xff, 0xfe],
+    n_bits: 9,
+    q_bits: 19,
+    n: 439,
+    p: 3,
+    q: 1<<19,
+    b_s: 264,
+    b_t: 88,
+    norm_bound_s: (1<<18) - 264,
+    norm_bound_t: (1<<18) - 88,
+    d1: 9,
+    d2: 8,
+    d3: 5,
+    padded_n: 448,
+};
+
+pub const XXX_20140508_593: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20140508593,
+    name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 53, 57, 51, 0][0],
+    oid: [0xff, 0xff, 0xfd],
+    n_bits: 10,
+    q_bits: 19,
+    n: 593,
+    p: 3,
+    q: 1<<19,
+    b_s: 300,
+    b_t: 100,
+    norm_bound_s: (1<<18) - 300,
+    norm_bound_t: (1<<18) - 100,
+    d1: 10,
+    d2: 10,
+    d3: 8,
+    padded_n: 608,
+};
+
+pub const XXX_20140508_743: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20140508743,
+    name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 55, 52, 51, 0][0],
+    oid: [0xff, 0xff, 0xfc],
+    n_bits: 10,
+    q_bits: 20,
+    n: 743,
+    p: 3,
+    q: 1<<20,
+    b_s: 336,
+    b_t: 112,
+    norm_bound_s: (1<<19) - 336,
+    norm_bound_t: (1<<19) - 112,
+    d1: 11,
+    d2: 11,
+    d3: 15,
+    padded_n: 768,
+};
+
+pub const XXX_20151024_401: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20151024401,
+    name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 52, 48, 49, 0][0],
+    oid: [0xff, 0xff, 0xfb],
+    n_bits: 9,
+    q_bits: 15,
+    n: 401,
+    p: 3,
+    q: 1<<15,
+    b_s: 138,
+    b_t: 46,
+    norm_bound_s: (1<<14) - 138,
+    norm_bound_t: (1<<14) - 46,
+    d1: 8,
+    d2: 8,
+    d3: 6,
+    padded_n: 416,
+};
+
+pub const XXX_20151024_443: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20151024443,
+    name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 52, 52, 51, 0][0],
+    oid: [0xff, 0xff, 0xfa],
+    n_bits: 9,
+    q_bits: 16,
+    n: 443,
+    p: 3,
+    q: 1<<16,
+    b_s: 138,
+    b_t: 46,
+    norm_bound_s: (1<<15) - 138,
+    norm_bound_t: (1<<15) - 46,
+    d1: 9,
+    d2: 8,
+    d3: 5,
+    padded_n: 448,
+};
+
+pub const XXX_20151024_563: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20151024563,
+    name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 53, 54, 51, 0][0],
+    oid: [0xff, 0xff, 0xf9],
+    n_bits: 10,
+    q_bits: 16,
+    n: 563,
+    p: 3,
+    q: 1<<16,
+    b_s: 174,
+    b_t: 58,
+    norm_bound_s: (1<<15) - 174,
+    norm_bound_t: (1<<15) - 58,
+    d1: 10,
+    d2: 9,
+    d3: 8,
+    padded_n: 592,
+};
+
+// Test parameter set that is not formally transcript secure
+// pub const XXX_20151024_509: ParamSet = ParamSet {
+//     id: ParamSetId::Xxx20151024509,
+//     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 53, 48, 57, 0][0],
+//     oid: [0xff, 0xff, 0xf8],
+//     n_bits: 9,
+//     q_bits: 14,
+//     n: 509,
+//     p: 3,
+//     q: 1<<14,
+//     b_s: 10000,
+//     b_t: 10000,
+//     norm_bound_s: (1<<13) - 1,
+//     norm_bound_t: (1<<13) - 1,
+//     d1: 9,
+//     d2: 9,
+//     d3: 8,
+//     padded_n: 512,
+// };
+
+pub const XXX_20151024_743: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20151024743,
+    name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 55, 52, 51, 0][0],
+    oid: [0xff, 0xff, 0xf7],
+    n_bits: 10,
+    q_bits: 17,
+    n: 743,
+    p: 3,
+    q: 1<<17,
+    b_s: 186,
+    b_t: 62,
+    norm_bound_s: (1<<16) - 186,
+    norm_bound_t: (1<<16) - 62,
+    d1: 11,
+    d2: 11,
+    d3: 6,
+    padded_n: 752,
+};
+
+pub const XXX_20151024_907: ParamSet = ParamSet {
+    id: ParamSetId::Xxx20151024907,
+    name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 57, 48, 55, 0][0],
+    oid: [0xff, 0xff, 0xf6],
+    n_bits: 10,
+    q_bits: 17,
+    n: 907,
+    p: 3,
+    q: 1<<17,
+    b_s: 225,
+    b_t: 75,
+    norm_bound_s: (1<<16) - 225,
+    norm_bound_t: (1<<16) - 75,
+    d1: 13,
+    d2: 12,
+    d3: 7,
+    padded_n: 912,
+};
