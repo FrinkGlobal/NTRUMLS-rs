@@ -1,6 +1,7 @@
-# NTRUEncrypt library for Rust #
+# NTRUMLS library for Rust #
 
-[![Build Status](https://travis-ci.org/FractalGlobal/NTRUMLS-rs.svg?branch=develop)](https://travis-ci.org/FractalGlobal/NTRUMLS-rs)
+[![Build Status](https://travis-ci.org/FractalGlobal/NTRUMLS-rs.svg?branch=master)](https://travis-ci.org/FractalGlobal/NTRUMLS-rs)
+[![Coverage Status](https://coveralls.io/repos/FractalGlobal/NTRUMLS-rs/badge.svg?branch=master&service=github)](https://coveralls.io/github/FractalGlobal/NTRUMLS-rs?branch=master)
 
 This library implements an interface with
 *[NTRUMLS](https://github.com/NTRUOpenSourceProject/NTRUMLS)* C library. It is

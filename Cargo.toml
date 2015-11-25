@@ -1,6 +1,6 @@
 [package]
 name = "ntrumls"
-version = "0.1.0"
+version = "0.5.0"
 links = "ntrumls"
 build = "build.rs"
 license = "GPL-3.0+"
@@ -9,7 +9,7 @@ repository = "https://github.com/FractalGlobal/NTRUMLS-rs"
 documentation = "http://fractal.global/NTRUMLS-rs"
 authors = ["Razican <admin@razican.com>"]
 description = """
-NTRUMLS interface in Rust. based on the reference implementation.
+NTRUMLS library for Rust. An interface to the reference implementation.
 """
 keywords = ["NTRUMLS", "NTRU", "NTRUSign", "NTRUEncrypt"]
 
