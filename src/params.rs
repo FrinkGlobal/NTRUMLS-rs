@@ -140,7 +140,7 @@ pub const XXX_20140508_439: ParamSet = ParamSet {
     padded_n: 448,
 };
 
-/// 128 bit security parameter
+/// 192 bit security parameter
 pub const XXX_20140508_593: ParamSet = ParamSet {
     id: ParamSetId::Xxx20140508593,
     name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 53, 57, 51, 0][0],
@@ -160,7 +160,7 @@ pub const XXX_20140508_593: ParamSet = ParamSet {
     padded_n: 608,
 };
 
-/// 192 bit security parameter
+/// 256 bit security parameter
 pub const XXX_20140508_743: ParamSet = ParamSet {
     id: ParamSetId::Xxx20140508743,
     name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 55, 52, 51, 0][0],
@@ -180,7 +180,6 @@ pub const XXX_20140508_743: ParamSet = ParamSet {
     padded_n: 768,
 };
 
-/// 256 bit security parameter
 pub const XXX_20151024_401: ParamSet = ParamSet {
     id: ParamSetId::Xxx20151024401,
     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 52, 48, 49, 0][0],
