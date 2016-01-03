@@ -29,7 +29,7 @@
 //! let signature = ntrumls::sign(&private_key, &public_key, message).unwrap();
 //! assert!(ntrumls::verify(&signature, &public_key, message));
 //! ```
-// #![forbid(missing_docs, warnings)]
+//! #![forbid(missing_docs, warnings)]
 #![deny(deprecated, drop_with_repr_extern, improper_ctypes,
         non_shorthand_field_patterns, overflowing_literals, plugin_as_library,
         private_no_mangle_fns, private_no_mangle_statics, stable_features, unconditional_recursion,
@@ -62,18 +62,32 @@ use params::ParamSet;
 pub fn generate_keys(params: &ParamSet) -> Option<(Box<[u8]>, Box<[u8]>)> {
     let (mut privkey_blob_len, mut pubkey_blob_len) = (0usize, 0usize);
 
-    let result = unsafe { ffi::pq_gen_key(params, &mut privkey_blob_len, ptr::null_mut(),
-                                          &mut pubkey_blob_len, ptr::null_mut()) };
-    if result != 0 { return None }
+    let result = unsafe {
+        ffi::pq_gen_key(params,
+                        &mut privkey_blob_len,
+                        ptr::null_mut(),
+                        &mut pubkey_blob_len,
+                        ptr::null_mut())
+    };
+    if result != 0 {
+        return None;
+    }
 
     let mut privkey_blob = vec![0u8; privkey_blob_len];
     let mut pubkey_blob = vec![0u8; pubkey_blob_len];
-    let result = unsafe { ffi::pq_gen_key(params, &mut privkey_blob_len,
-                                          &mut privkey_blob[..][0], &mut pubkey_blob_len,
-                                          &mut pubkey_blob[..][0]) };
+    let result = unsafe {
+        ffi::pq_gen_key(params,
+                        &mut privkey_blob_len,
+                        &mut privkey_blob[..][0],
+                        &mut pubkey_blob_len,
+                        &mut pubkey_blob[..][0])
+    };
 
-    if result != 0 { None } else {
-        Some((privkey_blob.into_boxed_slice(), pubkey_blob.into_boxed_slice()))
+    if result != 0 {
+        None
+    } else {
+        Some((privkey_blob.into_boxed_slice(),
+              pubkey_blob.into_boxed_slice()))
     }
 }
 
@@ -94,17 +108,35 @@ pub fn generate_keys(params: &ParamSet) -> Option<(Box<[u8]>, Box<[u8]>)> {
 /// ```
 pub fn sign(private_key: &[u8], public_key: &[u8], message: &[u8]) -> Option<Box<[u8]>> {
     let mut sign_len = 0usize;
-    let result = unsafe { ffi::pq_sign(&mut sign_len, ptr::null_mut(), private_key.len(),
-                                  &private_key[0], public_key.len(), &public_key[0], message.len(),
-                                  &message[0]) };
-    if result != 0 { return None }
+    let result = unsafe {
+        ffi::pq_sign(&mut sign_len,
+                     ptr::null_mut(),
+                     private_key.len(),
+                     &private_key[0],
+                     public_key.len(),
+                     &public_key[0],
+                     message.len(),
+                     &message[0])
+    };
+    if result != 0 {
+        return None;
+    }
 
     let mut sign = vec![0u8; sign_len];
-    let result = unsafe { ffi::pq_sign(&mut sign_len, &mut sign[0], private_key.len(),
-                                       &private_key[0], public_key.len(), &public_key[0],
-                                       message.len(), &message[0]) };
+    let result = unsafe {
+        ffi::pq_sign(&mut sign_len,
+                     &mut sign[0],
+                     private_key.len(),
+                     &private_key[0],
+                     public_key.len(),
+                     &public_key[0],
+                     message.len(),
+                     &message[0])
+    };
 
-    if result != 0 { None } else {
+    if result != 0 {
+        None
+    } else {
         Some(sign.into_boxed_slice())
     }
 }
@@ -126,8 +158,14 @@ pub fn sign(private_key: &[u8], public_key: &[u8], message: &[u8]) -> Option<Box
 /// let signature = ntrumls::sign(&private_key, &public_key, message).unwrap();
 /// assert!(ntrumls::verify(&signature, &public_key, message));
 pub fn verify(signature: &[u8], public_key: &[u8], message: &[u8]) -> bool {
-    let result = unsafe { ffi::pq_verify(signature.len(), &signature[0], public_key.len(),
-                                         &public_key[0], message.len(), &message[0]) };
+    let result = unsafe {
+        ffi::pq_verify(signature.len(),
+                       &signature[0],
+                       public_key.len(),
+                       &public_key[0],
+                       message.len(),
+                       &message[0])
+    };
 
     println!("sign_len: {}", signature.len());
     result == 0
