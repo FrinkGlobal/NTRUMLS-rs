@@ -169,6 +169,5 @@ pub fn verify(signature: &[u8], public_key: &[u8], message: &[u8]) -> bool {
                        &message[0])
     };
 
-    println!("sign_len: {}", signature.len());
     result == 0
 }
