@@ -2,6 +2,7 @@ extern crate gcc;
 
 fn main() {
     gcc::Config::new()
+        .opt_level(2)
         .file("src/c/src/crypto_hash_sha512.c")
         .file("src/c/src/crypto_stream.c")
         .file("src/c/src/randombytes.c")

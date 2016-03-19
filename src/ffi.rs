@@ -1,7 +1,7 @@
 use libc::{c_int, size_t, c_uchar};
 use params::ParamSet;
 
-extern "C" {
+extern {
     // pqntrusign.h
     pub fn pq_gen_key(P: *const ParamSet,
                       privkey_blob_len: *mut size_t,
