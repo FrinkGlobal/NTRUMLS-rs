@@ -88,8 +88,7 @@ pub fn generate_keys(params: &ParamSet) -> Option<(Box<[u8]>, Box<[u8]>)> {
     if result != 0 {
         None
     } else {
-        Some((privkey_blob.into_boxed_slice(),
-              pubkey_blob.into_boxed_slice()))
+        Some((privkey_blob.into_boxed_slice(), pubkey_blob.into_boxed_slice()))
     }
 }
 
