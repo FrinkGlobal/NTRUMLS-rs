@@ -179,11 +179,13 @@ pub struct PrivateKey {
 }
 
 impl PrivateKey {
+    /// Import the actual bytes of the key to the struct
     pub fn import(bytes: Box<[u8]>) -> PrivateKey {
         PrivateKey { ffi_key: bytes }
     }
 
-    fn get_bytes(&self) -> &[u8] {
+    /// Get the byte slice of the key
+    pub fn get_bytes(&self) -> &[u8] {
         &self.ffi_key
     }
 }
@@ -195,11 +197,13 @@ pub struct PublicKey {
 }
 
 impl PublicKey {
+    /// Import the actual bytes of the key to the struct
     pub fn import(bytes: Box<[u8]>) -> PublicKey {
         PublicKey { ffi_key: bytes }
     }
 
-    fn get_bytes(&self) -> &[u8] {
+    /// Get the byte slice of the key
+    pub fn get_bytes(&self) -> &[u8] {
         &self.ffi_key
     }
 }
