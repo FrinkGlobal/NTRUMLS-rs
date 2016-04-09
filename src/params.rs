@@ -191,6 +191,7 @@ pub const XXX_20140508_743: ParamSet = ParamSet {
     padded_n: 768,
 };
 
+/// New 2015 parameter
 pub const XXX_20151024_401: ParamSet = ParamSet {
     id: ParamSetId::Xxx20151024401,
     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 52, 48, 49, 0][0],
@@ -210,6 +211,7 @@ pub const XXX_20151024_401: ParamSet = ParamSet {
     padded_n: 416,
 };
 
+/// New 2015 parameter
 pub const XXX_20151024_443: ParamSet = ParamSet {
     id: ParamSetId::Xxx20151024443,
     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 52, 52, 51, 0][0],
@@ -229,6 +231,7 @@ pub const XXX_20151024_443: ParamSet = ParamSet {
     padded_n: 448,
 };
 
+/// New 2015 parameter
 pub const XXX_20151024_563: ParamSet = ParamSet {
     id: ParamSetId::Xxx20151024563,
     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 53, 54, 51, 0][0],
@@ -268,6 +271,7 @@ pub const XXX_20151024_563: ParamSet = ParamSet {
 //     padded_n: 512,
 // };
 
+/// New 2015 parameter
 pub const XXX_20151024_743: ParamSet = ParamSet {
     id: ParamSetId::Xxx20151024743,
     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 55, 52, 51, 0][0],
@@ -287,6 +291,7 @@ pub const XXX_20151024_743: ParamSet = ParamSet {
     padded_n: 752,
 };
 
+/// New 2015 parameter
 pub const XXX_20151024_907: ParamSet = ParamSet {
     id: ParamSetId::Xxx20151024907,
     name: &[120, 120, 120, 45, 50, 48, 49, 53, 49, 48, 50, 52, 45, 57, 48, 55, 0][0],
