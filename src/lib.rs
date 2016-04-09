@@ -61,7 +61,7 @@ use params::ParamSet;
 /// let (private_key, public_key) = ntrumls::generate_keys(&params).unwrap();
 ///
 /// ```
-pub fn generate_keys(params: &ParamSet) -> Option<(Box<[u8]>, Box<[u8]>)> {
+pub fn generate_keys(params: &ParamSet) -> Option<(PrivateKey, PublicKey)> {
     let (mut privkey_blob_len, mut pubkey_blob_len) = (0usize, 0usize);
 
     let result = unsafe {
@@ -88,7 +88,7 @@ pub fn generate_keys(params: &ParamSet) -> Option<(Box<[u8]>, Box<[u8]>)> {
     if result != 0 {
         None
     } else {
-        Some((privkey_blob.into_boxed_slice(), pubkey_blob.into_boxed_slice()))
+        Some((PrivateKey {ffi_key: privkey_blob.into_boxed_slice()}, PublicKey {ffi_key: pubkey_blob.into_boxed_slice()}))
     }
 }
 
@@ -107,15 +107,15 @@ pub fn generate_keys(params: &ParamSet) -> Option<(Box<[u8]>, Box<[u8]>)> {
 /// let mut message = b"Hello from NTRUMLS!";
 /// let signature = ntrumls::sign(&private_key, &public_key, message).unwrap();
 /// ```
-pub fn sign(private_key: &[u8], public_key: &[u8], message: &[u8]) -> Option<Box<[u8]>> {
+pub fn sign(private_key: &PrivateKey, public_key: &PublicKey, message: &[u8]) -> Option<Box<[u8]>> {
     let mut sign_len = 0usize;
     let result = unsafe {
         ffi::pq_sign(&mut sign_len,
                      ptr::null_mut(),
-                     private_key.len(),
-                     &private_key[0],
-                     public_key.len(),
-                     &public_key[0],
+                     private_key.get_bytes().len(),
+                     &private_key.get_bytes()[0],
+                     public_key.get_bytes().len(),
+                     &public_key.get_bytes()[0],
                      message.len(),
                      &message[0])
     };
@@ -127,10 +127,10 @@ pub fn sign(private_key: &[u8], public_key: &[u8], message: &[u8]) -> Option<Box
     let result = unsafe {
         ffi::pq_sign(&mut sign_len,
                      &mut sign[0],
-                     private_key.len(),
-                     &private_key[0],
-                     public_key.len(),
-                     &public_key[0],
+                     private_key.get_bytes().len(),
+                     &private_key.get_bytes()[0],
+                     public_key.get_bytes().len(),
+                     &public_key.get_bytes()[0],
                      message.len(),
                      &message[0])
     };
@@ -158,15 +158,39 @@ pub fn sign(private_key: &[u8], public_key: &[u8], message: &[u8]) -> Option<Box
 ///
 /// let signature = ntrumls::sign(&private_key, &public_key, message).unwrap();
 /// assert!(ntrumls::verify(&signature, &public_key, message));
-pub fn verify(signature: &[u8], public_key: &[u8], message: &[u8]) -> bool {
+pub fn verify(signature: &[u8], public_key: &PublicKey, message: &[u8]) -> bool {
     let result = unsafe {
         ffi::pq_verify(signature.len(),
                        &signature[0],
-                       public_key.len(),
-                       &public_key[0],
+                       public_key.get_bytes().len(),
+                       &public_key.get_bytes()[0],
                        message.len(),
                        &message[0])
     };
 
     result == 0
+}
+
+/// NTRUMLS private key
+#[derive(PartialEq, Eq, Debug, Clone)]
+pub struct PrivateKey {
+    ffi_key: Box<[u8]>,
+}
+
+impl PrivateKey {
+    unsafe fn get_bytes(&self) -> &[u8] {
+        &self.ffi_key
+    }
+}
+
+/// NTRUMLS public key
+#[derive(PartialEq, Eq, Debug, Clone)]
+pub struct PublicKey {
+    ffi_key: Box<[u8]>,
+}
+
+impl PublicKey {
+    unsafe fn get_bytes(&self) -> &[u8] {
+        &self.ffi_key
+    }
 }
