@@ -1,6 +1,6 @@
 [package]
 name = "ntrumls"
-version = "0.6.2"
+version = "0.7.0"
 links = "ntrumls"
 build = "build.rs"
 license = "GPL-3.0+"
