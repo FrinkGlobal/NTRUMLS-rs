@@ -88,7 +88,8 @@ pub fn generate_keys(params: &ParamSet) -> Option<(PrivateKey, PublicKey)> {
     if result != 0 {
         None
     } else {
-        Some((PrivateKey {ffi_key: privkey_blob.into_boxed_slice()}, PublicKey {ffi_key: pubkey_blob.into_boxed_slice()}))
+        Some((PrivateKey::import(privkey_blob.into_boxed_slice()),
+              PublicKey::import(pubkey_blob.into_boxed_slice())))
     }
 }
 
@@ -178,6 +179,10 @@ pub struct PrivateKey {
 }
 
 impl PrivateKey {
+    fn import(bytes: Box<[u8]>) -> PrivateKey {
+        PrivateKey { ffi_key: bytes }
+    }
+
     unsafe fn get_bytes(&self) -> &[u8] {
         &self.ffi_key
     }
@@ -190,6 +195,10 @@ pub struct PublicKey {
 }
 
 impl PublicKey {
+    fn import(bytes: Box<[u8]>) -> PublicKey {
+        PublicKey { ffi_key: bytes }
+    }
+
     unsafe fn get_bytes(&self) -> &[u8] {
         &self.ffi_key
     }
