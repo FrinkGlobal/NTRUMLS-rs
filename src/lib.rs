@@ -179,11 +179,11 @@ pub struct PrivateKey {
 }
 
 impl PrivateKey {
-    fn import(bytes: Box<[u8]>) -> PrivateKey {
+    pub fn import(bytes: Box<[u8]>) -> PrivateKey {
         PrivateKey { ffi_key: bytes }
     }
 
-    unsafe fn get_bytes(&self) -> &[u8] {
+    fn get_bytes(&self) -> &[u8] {
         &self.ffi_key
     }
 }
@@ -195,11 +195,11 @@ pub struct PublicKey {
 }
 
 impl PublicKey {
-    fn import(bytes: Box<[u8]>) -> PublicKey {
+    pub fn import(bytes: Box<[u8]>) -> PublicKey {
         PublicKey { ffi_key: bytes }
     }
 
-    unsafe fn get_bytes(&self) -> &[u8] {
+    fn get_bytes(&self) -> &[u8] {
         &self.ffi_key
     }
 }
