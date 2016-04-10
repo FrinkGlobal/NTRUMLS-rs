@@ -30,10 +30,14 @@ before_script:
 # the main build
 script:
   - |
-      travis-cargo build &&
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then travis-cargo build &&
       travis-cargo test &&
       travis-cargo bench &&
-      travis-cargo --only stable doc
+      travis-cargo --only stable doc fi
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cargo build &&
+      cargo test &&
+      cargo bench fi
 after_success:
   - travis-cargo --only stable doc-upload
   - travis-cargo coveralls --no-sudo --verify
