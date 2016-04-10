@@ -37,7 +37,7 @@ script:
       travis-cargo --only stable doc;
       fi
   - |
-      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cargo build &&
       cargo test &&
       cargo bench;
