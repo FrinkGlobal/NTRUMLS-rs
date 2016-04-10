@@ -24,8 +24,10 @@ rust:
 # load travis-cargo
 before_script:
   - |
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       pip install 'travis-cargo<0.2' --user &&
       export PATH=$HOME/.local/bin:$PATH
+      fi
 
 # the main build
 script:
@@ -43,8 +45,14 @@ script:
       cargo bench;
       fi
 after_success:
-  - travis-cargo --only stable doc-upload
-  - travis-cargo coveralls --no-sudo --verify
+  - |
+      if [["$TRAVIS_OS_NAME" == "linux"]]; then
+      travis-cargo --only stable doc-upload;
+      fi
+  - |
+      if [["$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_RUST_VERSION" == "stable"]]; then
+      travis-cargo coveralls --no-sudo --verify;
+      fi
 
 env:
   global:
