@@ -1,8 +1,6 @@
-//! NTRUMLS library for Rust
-//!
-//! This library implements the NTRUMLS library in Rust. It is an interface to the reference
-//! NTRUMLS implementation. NTRUMLS is a modular latice signature based in NTRU, which avoids the
-//! security issues of NTRUSign. More on NTRUMLS
+//! This crate implements the NTRUMLS library in Rust. It is an interface to the reference NTRUMLS
+//! implementation. NTRUMLS is a modular latice signature based in NTRU, which avoids the security
+//! issues of NTRUSign. More on NTRUMLS
 //! [here](https://github.com/NTRUOpenSourceProject/NTRUMLS/raw/master/doc/NTRUMLS-preprint.pdf).
 //!
 //! NTRU is a faster encryption / decryption scheme, that uses latice based encryption to provide
@@ -13,6 +11,8 @@
 //! ```
 //! extern crate ntrumls;
 //! ```
+//!
+//! # Examples
 //!
 //! To generate the keys that will be used during encryption / decryption, you have to use the
 //! ```generate_keys()``` function. These keys must not be used in NTRUEncrypt nor in other
