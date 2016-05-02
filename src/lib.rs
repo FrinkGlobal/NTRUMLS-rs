@@ -88,8 +88,8 @@ pub fn generate_keys(params: &ParamSet) -> Option<(PrivateKey, PublicKey)> {
     if result != 0 {
         None
     } else {
-        Some((PrivateKey::import(privkey_blob.into_boxed_slice()),
-              PublicKey::import(pubkey_blob.into_boxed_slice())))
+        Some((PrivateKey::import(privkey_blob.as_slice()),
+              PublicKey::import(pubkey_blob.as_slice())))
     }
 }
 
@@ -180,8 +180,8 @@ pub struct PrivateKey {
 
 impl PrivateKey {
     /// Import the actual bytes of the key to the struct
-    pub fn import(bytes: Box<[u8]>) -> PrivateKey {
-        PrivateKey { ffi_key: bytes }
+    pub fn import(bytes: &[u8]) -> PrivateKey {
+        PrivateKey { ffi_key: bytes.to_vec().into_boxed_slice() }
     }
 
     /// Get the byte slice of the key
@@ -198,8 +198,8 @@ pub struct PublicKey {
 
 impl PublicKey {
     /// Import the actual bytes of the key to the struct
-    pub fn import(bytes: Box<[u8]>) -> PublicKey {
-        PublicKey { ffi_key: bytes }
+    pub fn import(bytes: &[u8]) -> PublicKey {
+        PublicKey { ffi_key: bytes.to_vec().into_boxed_slice() }
     }
 
     /// Get the byte slice of the key
