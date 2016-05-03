@@ -16,10 +16,3 @@ This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
 Foundation, either version 3 of the License, or (at your option) any later
 version.
-
-# Fractal #
-
-This library is being developed under the Fractal project. Fractal project is
-developing a cryptocurrency currently that aims to fix all the usual problems
-such as increasing transaction verification time, trimming the blockchain,
-fixing Nothing at Stake, etc. It is being developed in Rust.
