@@ -12,7 +12,7 @@ addons:
       - libdw-dev
       - binutils-dev
 
-# run builds for all the trains
+# Run builds for all the supported trains
 rust:
   - nightly
   - beta
@@ -20,7 +20,7 @@ rust:
   - 1.8.0
   - 1.7.0
 
-# load travis-cargo
+# Load travis-cargo
 before_script:
   - |
       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -28,14 +28,13 @@ before_script:
       export PATH=$HOME/.local/bin:$PATH
       fi
 
-# the main build
+# The main build
 script:
   - |
       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       travis-cargo build &&
       travis-cargo test &&
-      travis-cargo bench &&
-      travis-cargo --only stable doc;
+      travis-cargo bench;
       fi
   - |
       if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -43,14 +42,17 @@ script:
       cargo test &&
       cargo bench;
       fi
+
+# Send coverage reports and upload docs
 after_success:
   - |
-      if [["$TRAVIS_OS_NAME" == "linux"]]; then
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      travis-cargo --only stable doc &&
       travis-cargo --only stable doc-upload;
       fi
   - |
-      if [["$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_RUST_VERSION" == "stable"]]; then
-      travis-cargo coveralls --no-sudo --verify;
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      travis-cargo --only stable coveralls --no-sudo --verify;
       fi
 
 env:
