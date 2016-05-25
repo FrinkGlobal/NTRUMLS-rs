@@ -2,8 +2,10 @@
 //!
 //! This module includes the needed parameters for NTRUMLS key generation.
 use libc::c_char;
+use std::fmt;
 
 #[repr(C)]
+#[derive(Debug, PartialEq, Clone, Eq)]
 enum ParamSetId {
     Xxx20140508401,
     Xxx20140508439,
@@ -18,10 +20,30 @@ enum ParamSetId {
     Xxx20151024907,
 }
 
+impl fmt::Display for ParamSetId {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let name = match *self {
+            ParamSetId::Xxx20140508401 => "XXX_20140508_401",
+            ParamSetId::Xxx20140508439 => "XXX_20140508_439",
+            ParamSetId::Xxx20140508593 => "XXX_20140508_593",
+            ParamSetId::Xxx20140508743 => "XXX_20140508_743",
+
+            ParamSetId::Xxx20151024401 => "XXX_20151024_401",
+            ParamSetId::Xxx20151024443 => "XXX_20151024_443",
+            ParamSetId::Xxx20151024563 => "XXX_20151024_563",
+            // ParamSetId::Xxx20151024509 => "XXX_20151024_509",
+            ParamSetId::Xxx20151024743 => "XXX_20151024_743",
+            ParamSetId::Xxx20151024907 => "XXX_20151024_907",
+        };
+        write!(f, "{}", name)
+    }
+}
+
 /// NTRUMLS parameter set
 ///
 /// This struct represents a parameter set for NTRUMLS key generation.
 #[repr(C)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct ParamSet {
     /// Parameter set id
     id: ParamSetId,
@@ -55,6 +77,11 @@ pub struct ParamSet {
     padded_n: u16,
 }
 
+impl fmt::Display for ParamSet {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.id)
+    }
+}
 impl ParamSet {
     /// Ring degree
     pub fn get_n(&self) -> u16 {
