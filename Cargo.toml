@@ -12,6 +12,7 @@ description = """
 NTRUMLS library for Rust. An interface to the reference implementation.
 """
 keywords = ["NTRUMLS", "NTRU", "NTRUSign", "NTRUEncrypt"]
+exclude = ["src/c/doc/*", "src/c/ntrumls/*", "src/c/ntrumls-vs.VC.db", ]
 
 [dependencies]
 libc = "^0.2"
