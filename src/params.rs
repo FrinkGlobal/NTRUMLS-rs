@@ -141,7 +141,7 @@ impl ParamSet {
 /// 112 bit security parameter
 pub const XXX_20140508_401: ParamSet = ParamSet {
     id: ParamSetId::Xxx20140508401,
-    name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 52, 48, 49i8, 0][0],
+    name: &[120, 120, 120, 45, 50, 48, 49, 52, 48, 53, 48, 56, 45, 52, 48, 49, 0][0],
     oid: [0xff, 0xff, 0xff],
     n_bits: 9,
     q_bits: 18,
