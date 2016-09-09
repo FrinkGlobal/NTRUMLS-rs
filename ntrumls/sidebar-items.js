@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["generate_keys","Generates a public and private key pair"],["sign","Signs a message"],["verify","Verifies a signed message"]],"mod":[["params","NTRUMLS parameter module"]],"struct":[["PrivateKey","NTRUMLS private key"],["PublicKey","NTRUMLS public key"]]});
