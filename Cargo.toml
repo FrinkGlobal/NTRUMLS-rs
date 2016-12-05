@@ -1,18 +1,18 @@
 [package]
 name = "ntrumls"
-version = "0.9.4"
+version = "0.9.5"
 links = "ntrumls"
 build = "build.rs"
 license = "GPL-3.0+"
 readme = "README.md"
 repository = "https://github.com/FractalGlobal/NTRUMLS-rs"
-documentation = "http://fractal.global/NTRUMLS-rs"
+documentation = "https://docs.rs/ntrumls/"
 authors = ["Razican <iban@fractal.global>"]
 description = """
 NTRUMLS library for Rust. An interface to the reference implementation.
 """
 keywords = ["NTRUMLS", "NTRU", "NTRUSign", "NTRUEncrypt"]
-exclude = ["src/c/doc/*", "src/c/ntrumls/*", "src/c/ntrumls-vs.VC.db", ]
+exclude = ["src/c/doc/*", "src/c/ntrumls/*", "src/c/ntrumls-vs.VC.db"]
 
 [dependencies]
 libc = "^0.2"
